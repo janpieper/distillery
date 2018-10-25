@@ -763,7 +763,11 @@ defmodule Mix.Releases.Runtime.Control do
           Code.eval_quoted(quoted)
         rescue
           err ->
-            Console.error("Evaluation failed with: " <> Exception.message(err))
+            Console.error("""
+            Evaluation failed: #{Exception.message(err)}
+
+            #{Exception.format_stacktrace(System.stacktrace())}
+            """)
         end
 
       {:error, {_line, error, token}} when is_binary(error) and is_binary(token) ->
